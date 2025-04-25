@@ -5,47 +5,58 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const departments = [
   {
-    name: "Software Development",
-    head: { name: "Mike Johnson", title: "Software Development Lead" },
+    name: "Product & Engineering",
+    head: { name: "Sarah Chen", title: "Chief Technology Officer" },
     people: [
-      { name: "Alex Chen", title: "Senior Developer" },
-      { name: "Maria Garcia", title: "Frontend Developer" }
+      { name: "Michael Rodriguez", title: "VP of Engineering" },
+      { name: "Emma Thompson", title: "Director of Product" },
+      { name: "David Kim", title: "Principal Engineer" },
+      { name: "Priya Patel", title: "Senior Product Manager" },
+      { name: "James Wilson", title: "Engineering Manager" },
+      { name: "Maria Garcia", title: "Senior Frontend Engineer" },
+      { name: "Alex Johnson", title: "Backend Engineer" },
+      { name: "Lisa Wong", title: "UX Designer" },
+      { name: "Tom Anderson", title: "DevOps Lead" }
     ]
   },
   {
-    name: "IT Infrastructure",
-    head: { name: "James Wilson", title: "Infrastructure Lead" },
+    name: "Growth",
+    head: { name: "Marcus Taylor", title: "Chief Growth Officer" },
     people: [
-      { name: "Patricia Lee", title: "Systems Engineer" }
+      { name: "Jennifer Lee", title: "VP of Marketing" },
+      { name: "Ryan Mitchell", title: "Head of Sales" },
+      { name: "Sophie Martin", title: "Marketing Director" },
+      { name: "Daniel Brown", title: "Sales Operations Manager" },
+      { name: "Rachel Green", title: "Content Strategy Lead" },
+      { name: "Chris Evans", title: "Senior Account Executive" },
+      { name: "Amanda White", title: "Digital Marketing Manager" },
+      { name: "Kevin Zhang", title: "Growth Analytics Lead" }
     ]
   },
   {
-    name: "Data Science",
-    head: { name: "Rachel Kim", title: "Data Science Lead" },
+    name: "Customer Success",
+    head: { name: "Emily Rodriguez", title: "VP of Customer Success" },
     people: [
-      { name: "David Park", title: "ML Engineer" },
-      { name: "Sophie Chen", title: "Data Analyst" }
+      { name: "Nathan Parker", title: "Customer Success Director" },
+      { name: "Sarah Thompson", title: "Implementation Lead" },
+      { name: "Michael Chang", title: "Technical Support Manager" },
+      { name: "Jessica Williams", title: "Customer Experience Lead" },
+      { name: "Robert Turner", title: "Account Management Director" },
+      { name: "Linda Martinez", title: "Training Specialist" },
+      { name: "Andrew Wilson", title: "Customer Support Lead" }
     ]
   },
   {
-    name: "Human Resources",
-    head: { name: "Lisa Anderson", title: "HR Director" },
+    name: "People Operations",
+    head: { name: "Diana Foster", title: "Chief People Officer" },
     people: [
-      { name: "Tom Baker", title: "HR Manager" }
-    ]
-  },
-  {
-    name: "Finance",
-    head: { name: "Robert Martinez", title: "Finance Director" },
-    people: [
-      { name: "Emma White", title: "Financial Analyst" }
-    ]
-  },
-  {
-    name: "Legal",
-    head: { name: "Jennifer Murphy", title: "Legal Counsel" },
-    people: [
-      { name: "Michael Ross", title: "Compliance Officer" }
+      { name: "John Murphy", title: "HR Director" },
+      { name: "Michelle Lee", title: "Talent Acquisition Manager" },
+      { name: "Brian Cooper", title: "People Development Lead" },
+      { name: "Grace Kim", title: "Culture & Engagement Manager" },
+      { name: "Thomas Wright", title: "Compensation & Benefits Lead" },
+      { name: "Anna Garcia", title: "DEI Program Manager" },
+      { name: "Steven Chen", title: "HR Operations Specialist" }
     ]
   }
 ];
