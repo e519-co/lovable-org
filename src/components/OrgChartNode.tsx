@@ -22,7 +22,7 @@ const OrgChartNode = ({
     <div className="flex flex-col items-center">
       <div className="flex flex-col items-center">
         <div 
-          className="w-64 p-4 mb-2 bg-notion-background border border-notion-border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
+          className="w-64 p-4 mb-2 bg-notion-background border border-notion-border rounded-full shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
           onClick={() => setIsExpanded(!isExpanded)}
         >
           <div className="flex items-center gap-3">
