@@ -17,7 +17,7 @@ const Dashboard = () => {
         <div className="space-y-8">
           <DivisionKPIs />
           
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
             <TeamDistribution />
             <GrowthChart />
             <RecentUpdates />
