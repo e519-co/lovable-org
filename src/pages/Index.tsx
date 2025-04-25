@@ -1,6 +1,9 @@
 
 import React from 'react';
-import OrgChart from '../components/OrgChart';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Building2, Users } from 'lucide-react';
+import DepartmentOrgChart from '../components/DepartmentOrgChart';
+import PeopleOrgChart from '../components/PeopleOrgChart';
 
 const Index = () => {
   return (
@@ -11,9 +14,26 @@ const Index = () => {
           <p className="text-gray-500 text-sm mt-1">Company structure and reporting lines</p>
         </header>
         <main className="py-12">
-          <div className="overflow-x-auto">
-            <OrgChart />
-          </div>
+          <Tabs defaultValue="departments" className="w-full">
+            <TabsList className="mb-8">
+              <TabsTrigger value="departments" className="flex items-center gap-2">
+                <Building2 className="w-4 h-4" />
+                Divisions & Departments
+              </TabsTrigger>
+              <TabsTrigger value="people" className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                People View
+              </TabsTrigger>
+            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsContent value="departments">
+                <DepartmentOrgChart />
+              </TabsContent>
+              <TabsContent value="people">
+                <PeopleOrgChart />
+              </TabsContent>
+            </div>
+          </Tabs>
         </main>
       </div>
     </div>
