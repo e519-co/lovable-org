@@ -3,6 +3,13 @@ import React, { useState } from 'react';
 import { ArrowDown, UserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface OrgChartNodeProps {
   name: string;
@@ -90,41 +97,46 @@ const OrgChartNode = ({
               )}
               
               <ScrollArea className={`w-full ${isCompact ? 'max-h-[400px]' : ''}`}>
-                <div className={`flex flex-wrap gap-8 justify-center ${isCompact ? 'px-4' : ''}`}>
-                  {React.Children.map(children, child => {
-                    if (React.isValidElement(child)) {
-                      // Check if the child is an OrgChartNode component
-                      if (child.type === OrgChartNode) {
-                        // Safe to pass level prop to OrgChartNode
-                        return React.cloneElement(child, {
-                          level: level + 1,
-                          ...(typeof child.props === 'object' ? child.props : {})
-                        });
-                      }
-                      
-                      // Handle wrapper divs with OrgChartNode children
-                      if (child.props && child.props.children) {
-                        // Create a new children array with updated props for OrgChartNode components
-                        const updatedChildren = React.Children.map(child.props.children, grandChild => {
-                          if (React.isValidElement(grandChild) && grandChild.type === OrgChartNode) {
-                            return React.cloneElement(grandChild, {
-                              level: level + 1,
-                              ...(typeof grandChild.props === 'object' ? grandChild.props : {})
-                            });
-                          }
-                          return grandChild;
-                        });
+                <Carousel className="w-full max-w-[1200px]" opts={{ align: "start" }}>
+                  <CarouselContent>
+                    {React.Children.map(children, child => {
+                      if (React.isValidElement(child)) {
+                        // Check if the child is an OrgChartNode component
+                        if (child.type === OrgChartNode) {
+                          return (
+                            <CarouselItem className="basis-auto">
+                              {React.cloneElement(child, { level: level + 1 })}
+                            </CarouselItem>
+                          );
+                        }
                         
-                        // Clone the wrapper with updated children
-                        return React.cloneElement(child, {
-                          children: updatedChildren,
-                          ...(typeof child.props === 'object' ? child.props : {})
-                        });
+                        // Handle wrapper divs with OrgChartNode children
+                        if (child.props && child.props.children) {
+                          // Create a new children array with updated props for OrgChartNode components
+                          const updatedChildren = React.Children.map(child.props.children, grandChild => {
+                            if (React.isValidElement(grandChild) && grandChild.type === OrgChartNode) {
+                              return (
+                                <CarouselItem className="basis-auto">
+                                  {React.cloneElement(grandChild, { level: level + 1 })}
+                                </CarouselItem>
+                              );
+                            }
+                            return grandChild;
+                          });
+                          
+                          return (
+                            <CarouselContent>
+                              {updatedChildren}
+                            </CarouselContent>
+                          );
+                        }
                       }
-                    }
-                    return child;
-                  })}
-                </div>
+                      return child;
+                    })}
+                  </CarouselContent>
+                  <CarouselPrevious className="relative -left-4" />
+                  <CarouselNext className="relative -right-4" />
+                </Carousel>
               </ScrollArea>
             </div>
           </>
