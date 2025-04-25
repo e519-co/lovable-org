@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowDown, UserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -9,13 +8,15 @@ interface OrgChartNodeProps {
   title: string;
   avatarUrl?: string;
   children?: React.ReactNode;
+  level?: number;
 }
 
 const OrgChartNode = ({ 
   name, 
   title, 
   avatarUrl, 
-  children 
+  children,
+  level = 0
 }: OrgChartNodeProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isCompact, setIsCompact] = useState(false);
@@ -34,27 +35,32 @@ const OrgChartNode = ({
   const directReportsCount = countDirectReports();
   const showCompactToggle = directReportsCount > 8;
 
+  // Calculate indentation based on level
+  const levelIndent = level * 32; // 32px indent per level
+
   return (
-    <div className="flex flex-col items-center max-w-full">
-      <div className="flex flex-col items-center">
-        <div 
-          className={`w-52 p-4 bg-white rounded-full shadow-[0_2px_12px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_0_rgba(0,0,0,0.12)] transition-all duration-200 cursor-pointer border border-gray-100 ${children ? 'hover:bg-gray-50' : ''}`}
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10 border-2 border-gray-100">
-              <AvatarImage 
-                src={avatarUrl} 
-                alt={`${name}'s avatar`} 
-                className="object-cover"
-              />
-              <AvatarFallback className="bg-gray-50">
-                <UserRound className="w-5 h-5 text-gray-400" />
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 text-left">
-              <h3 className="font-medium text-gray-900 text-sm truncate">{name}</h3>
-              <p className="text-xs text-gray-500 font-normal truncate">{title}</p>
+    <div className="flex flex-col items-center max-w-full" style={{ marginLeft: levelIndent }}>
+      <div className={`flex flex-col items-center ${level > 0 ? 'border-l border-gray-200' : ''}`}>
+        <div className={`relative ${level > 0 ? 'before:absolute before:w-8 before:h-[1px] before:bg-gray-200 before:-left-8 before:top-1/2' : ''}`}>
+          <div 
+            className={`w-52 p-4 bg-white rounded-full shadow-[0_2px_12px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_0_rgba(0,0,0,0.12)] transition-all duration-200 cursor-pointer border border-gray-100 ${children ? 'hover:bg-gray-50' : ''}`}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            <div className="flex items-center gap-3">
+              <Avatar className="h-10 w-10 border-2 border-gray-100">
+                <AvatarImage 
+                  src={avatarUrl} 
+                  alt={`${name}'s avatar`} 
+                  className="object-cover"
+                />
+                <AvatarFallback className="bg-gray-50">
+                  <UserRound className="w-5 h-5 text-gray-400" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 text-left">
+                <h3 className="font-medium text-gray-900 text-sm truncate">{name}</h3>
+                <p className="text-xs text-gray-500 font-normal truncate">{title}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -84,7 +90,14 @@ const OrgChartNode = ({
               
               <ScrollArea className={`w-full ${isCompact ? 'max-h-[400px]' : ''}`}>
                 <div className={`flex flex-wrap gap-8 justify-center ${isCompact ? 'px-4' : ''}`}>
-                  {children}
+                  {React.Children.map(children, child => {
+                    if (React.isValidElement(child)) {
+                      return React.cloneElement(child, {
+                        level: level + 1
+                      });
+                    }
+                    return child;
+                  })}
                 </div>
               </ScrollArea>
             </div>
