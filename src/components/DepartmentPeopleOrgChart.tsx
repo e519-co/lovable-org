@@ -75,7 +75,7 @@ const DepartmentPeopleOrgChart = () => {
       <div className="p-8">
         <OrgChartNode 
           name={currentDepartment?.head.name || ""}
-          title={`${currentDepartment?.name} - ${currentDepartment?.head.title}`}
+          title={currentDepartment?.head.title || ""}
         >
           <div className="flex gap-8">
             {currentDepartment?.people.map((person) => (
