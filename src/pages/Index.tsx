@@ -1,9 +1,10 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, Users } from 'lucide-react';
+import { Building2, Users, List } from 'lucide-react';
 import DepartmentOrgChart from '../components/DepartmentOrgChart';
 import PeopleOrgChart from '../components/PeopleOrgChart';
+import DepartmentPeopleOrgChart from '../components/DepartmentPeopleOrgChart';
 
 const Index = () => {
   return (
@@ -24,6 +25,10 @@ const Index = () => {
                 <Users className="w-4 h-4" />
                 People View
               </TabsTrigger>
+              <TabsTrigger value="department-people" className="flex items-center gap-2">
+                <List className="w-4 h-4" />
+                Departments & People
+              </TabsTrigger>
             </TabsList>
             <div className="overflow-x-auto">
               <TabsContent value="departments">
@@ -31,6 +36,9 @@ const Index = () => {
               </TabsContent>
               <TabsContent value="people">
                 <PeopleOrgChart />
+              </TabsContent>
+              <TabsContent value="department-people">
+                <DepartmentPeopleOrgChart />
               </TabsContent>
             </div>
           </Tabs>
