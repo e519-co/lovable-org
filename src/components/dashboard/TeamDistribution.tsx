@@ -42,7 +42,11 @@ export function TeamDistribution() {
             payload={data.map(item => ({
               value: item.name,
               color: item.color,
-              payload: { color: item.color }
+              // Fix the type issue by adding the required strokeDasharray property
+              payload: { 
+                color: item.color,
+                strokeDasharray: 0 // Add the required property
+              }
             }))}
           />
         </ChartLegend>
