@@ -105,7 +105,10 @@ const OrgChartNode = ({
                         if (child.type === OrgChartNode) {
                           return (
                             <CarouselItem className="basis-auto">
-                              {React.cloneElement(child, { level: level + 1 })}
+                              {React.cloneElement(child, { 
+                                ...child.props,
+                                level: level + 1 
+                              })}
                             </CarouselItem>
                           );
                         }
@@ -117,7 +120,10 @@ const OrgChartNode = ({
                             if (React.isValidElement(grandChild) && grandChild.type === OrgChartNode) {
                               return (
                                 <CarouselItem className="basis-auto">
-                                  {React.cloneElement(grandChild, { level: level + 1 })}
+                                  {React.cloneElement(grandChild, {
+                                    ...grandChild.props,
+                                    level: level + 1
+                                  })}
                                 </CarouselItem>
                               );
                             }
