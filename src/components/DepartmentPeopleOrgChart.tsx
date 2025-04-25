@@ -6,45 +6,45 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const departments = [
   {
     name: "Software Development",
+    head: { name: "Mike Johnson", title: "Software Development Lead" },
     people: [
-      { name: "Mike Johnson", title: "Software Development Lead" },
       { name: "Alex Chen", title: "Senior Developer" },
       { name: "Maria Garcia", title: "Frontend Developer" }
     ]
   },
   {
     name: "IT Infrastructure",
+    head: { name: "James Wilson", title: "Infrastructure Lead" },
     people: [
-      { name: "James Wilson", title: "Infrastructure Lead" },
       { name: "Patricia Lee", title: "Systems Engineer" }
     ]
   },
   {
     name: "Data Science",
+    head: { name: "Rachel Kim", title: "Data Science Lead" },
     people: [
-      { name: "Rachel Kim", title: "Data Science Lead" },
       { name: "David Park", title: "ML Engineer" },
       { name: "Sophie Chen", title: "Data Analyst" }
     ]
   },
   {
     name: "Human Resources",
+    head: { name: "Lisa Anderson", title: "HR Director" },
     people: [
-      { name: "Lisa Anderson", title: "HR Director" },
       { name: "Tom Baker", title: "HR Manager" }
     ]
   },
   {
     name: "Finance",
+    head: { name: "Robert Martinez", title: "Finance Director" },
     people: [
-      { name: "Robert Martinez", title: "Finance Director" },
       { name: "Emma White", title: "Financial Analyst" }
     ]
   },
   {
     name: "Legal",
+    head: { name: "Jennifer Murphy", title: "Legal Counsel" },
     people: [
-      { name: "Jennifer Murphy", title: "Legal Counsel" },
       { name: "Michael Ross", title: "Compliance Officer" }
     ]
   }
@@ -73,7 +73,10 @@ const DepartmentPeopleOrgChart = () => {
       </div>
 
       <div className="p-8">
-        <OrgChartNode name={currentDepartment?.name || ""} title="Department">
+        <OrgChartNode 
+          name={currentDepartment?.head.name || ""}
+          title={`${currentDepartment?.name} - ${currentDepartment?.head.title}`}
+        >
           <div className="flex gap-8">
             {currentDepartment?.people.map((person) => (
               <OrgChartNode
