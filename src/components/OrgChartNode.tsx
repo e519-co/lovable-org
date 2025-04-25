@@ -97,8 +97,8 @@ const OrgChartNode = ({
                       if (child.type === OrgChartNode) {
                         // Safe to pass level prop to OrgChartNode
                         return React.cloneElement(child, {
-                          ...child.props,
-                          level: level + 1
+                          level: level + 1,
+                          ...child.props
                         });
                       }
                       
@@ -108,8 +108,8 @@ const OrgChartNode = ({
                         const updatedChildren = React.Children.map(child.props.children, grandChild => {
                           if (React.isValidElement(grandChild) && grandChild.type === OrgChartNode) {
                             return React.cloneElement(grandChild, {
-                              ...grandChild.props,
-                              level: level + 1
+                              level: level + 1,
+                              ...grandChild.props
                             });
                           }
                           return grandChild;
@@ -117,8 +117,8 @@ const OrgChartNode = ({
                         
                         // Clone the wrapper with updated children
                         return React.cloneElement(child, {
-                          ...child.props,
-                          children: updatedChildren
+                          children: updatedChildren,
+                          ...child.props
                         });
                       }
                     }
