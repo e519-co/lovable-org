@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ArrowDown, UserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -92,9 +93,26 @@ const OrgChartNode = ({
                 <div className={`flex flex-wrap gap-8 justify-center ${isCompact ? 'px-4' : ''}`}>
                   {React.Children.map(children, child => {
                     if (React.isValidElement(child)) {
-                      return React.cloneElement(child, {
-                        level: level + 1
-                      });
+                      // Only pass level prop to OrgChartNode components
+                      if (child.type === OrgChartNode) {
+                        return React.cloneElement(child, {
+                          level: level + 1
+                        });
+                      }
+                      // For non-OrgChartNode components (like div wrappers)
+                      // Process their children to pass level prop to any OrgChartNode descendants
+                      if (child.props.children) {
+                        return React.cloneElement(child, {
+                          children: React.Children.map(child.props.children, grandChild => {
+                            if (React.isValidElement(grandChild) && grandChild.type === OrgChartNode) {
+                              return React.cloneElement(grandChild, {
+                                level: level + 1
+                              });
+                            }
+                            return grandChild;
+                          })
+                        });
+                      }
                     }
                     return child;
                   })}
