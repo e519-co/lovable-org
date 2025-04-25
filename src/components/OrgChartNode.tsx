@@ -22,29 +22,29 @@ const OrgChartNode = ({
     <div className="flex flex-col items-center">
       <div className="flex flex-col items-center">
         <div 
-          className="w-64 p-4 mb-2 bg-notion-background border border-notion-border rounded-full shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer"
+          className="w-52 p-4 bg-white rounded-full shadow-[0_2px_12px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_0_rgba(0,0,0,0.12)] transition-all duration-200 cursor-pointer border border-gray-100"
           onClick={() => setIsExpanded(!isExpanded)}
         >
           <div className="flex items-center gap-3">
-            <Avatar>
+            <Avatar className="h-10 w-10 border-2 border-gray-100">
               <AvatarImage 
                 src={avatarUrl} 
                 alt={`${name}'s avatar`} 
                 className="object-cover"
               />
-              <AvatarFallback>
-                <UserRound className="w-5 h-5 text-notion-secondary" />
+              <AvatarFallback className="bg-gray-50">
+                <UserRound className="w-5 h-5 text-gray-400" />
               </AvatarFallback>
             </Avatar>
-            <div className="flex-1">
-              <h3 className="font-medium text-notion-text">{name}</h3>
-              <p className="text-sm text-notion-secondary">{title}</p>
+            <div className="flex-1 text-left">
+              <h3 className="font-medium text-gray-900 text-sm">{name}</h3>
+              <p className="text-xs text-gray-500 font-normal">{title}</p>
             </div>
           </div>
         </div>
         {children && isExpanded && (
           <>
-            <ArrowDown className="w-4 h-4 text-notion-border my-2" />
+            <ArrowDown className="w-4 h-4 text-gray-300 my-3" />
             <div className="flex flex-col items-center">
               {children}
             </div>
