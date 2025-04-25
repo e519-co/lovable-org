@@ -1,7 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import OrgChartNode from './OrgChartNode';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+interface DepartmentPeopleOrgChartProps {
+  searchQuery?: string;
+}
 
 const departments = [
   {
@@ -61,20 +65,80 @@ const departments = [
   }
 ];
 
-const DepartmentPeopleOrgChart = () => {
+const DepartmentPeopleOrgChart = ({ searchQuery = "" }: DepartmentPeopleOrgChartProps) => {
   const [selectedDepartment, setSelectedDepartment] = useState(departments[0].name);
+  const [filteredDepartments, setFilteredDepartments] = useState(departments);
   
-  const currentDepartment = departments.find(dept => dept.name === selectedDepartment);
+  // Filter departments based on search query
+  useEffect(() => {
+    if (!searchQuery) {
+      setFilteredDepartments(departments);
+      return;
+    }
+    
+    const query = searchQuery.toLowerCase();
+    const filtered = departments.filter(dept => {
+      // Check if department name or head matches
+      if (
+        dept.name.toLowerCase().includes(query) ||
+        dept.head.name.toLowerCase().includes(query) ||
+        dept.head.title.toLowerCase().includes(query)
+      ) {
+        return true;
+      }
+      
+      // Check if any team member matches
+      return dept.people.some(
+        person => person.name.toLowerCase().includes(query) || 
+                 person.title.toLowerCase().includes(query)
+      );
+    });
+    
+    setFilteredDepartments(filtered);
+    
+    // If current selected department is not in filtered list, select the first one
+    if (filtered.length > 0 && !filtered.some(dept => dept.name === selectedDepartment)) {
+      setSelectedDepartment(filtered[0].name);
+    }
+  }, [searchQuery, selectedDepartment]);
+
+  // Get the current department
+  const currentDepartment = filteredDepartments.find(dept => dept.name === selectedDepartment) || 
+                          (filteredDepartments.length > 0 ? filteredDepartments[0] : null);
+  
+  // Filter people in the current department by search query
+  const filteredPeople = currentDepartment?.people.filter(person => {
+    if (!searchQuery) return true;
+    
+    const query = searchQuery.toLowerCase();
+    return (
+      person.name.toLowerCase().includes(query) || 
+      person.title.toLowerCase().includes(query)
+    );
+  }) || [];
+
+  // If no departments match the search
+  if (filteredDepartments.length === 0) {
+    return (
+      <div className="p-8 text-center text-gray-500">
+        No departments or people found matching "{searchQuery}"
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
       <div className="w-[280px]">
-        <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
+        <Select 
+          value={selectedDepartment} 
+          onValueChange={setSelectedDepartment}
+          disabled={filteredDepartments.length <= 1}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Select department" />
           </SelectTrigger>
           <SelectContent>
-            {departments.map((dept) => (
+            {filteredDepartments.map((dept) => (
               <SelectItem key={dept.name} value={dept.name}>
                 {dept.name}
               </SelectItem>
@@ -83,22 +147,24 @@ const DepartmentPeopleOrgChart = () => {
         </Select>
       </div>
 
-      <div className="p-8">
-        <OrgChartNode 
-          name={currentDepartment?.head.name || ""}
-          title={currentDepartment?.head.title || ""}
-        >
-          <div className="flex gap-8">
-            {currentDepartment?.people.map((person) => (
-              <OrgChartNode
-                key={person.name}
-                name={person.name}
-                title={person.title}
-              />
-            ))}
-          </div>
-        </OrgChartNode>
-      </div>
+      {currentDepartment && (
+        <div className="p-8">
+          <OrgChartNode 
+            name={currentDepartment.head.name}
+            title={currentDepartment.head.title}
+          >
+            <div className="flex flex-wrap gap-8 justify-center">
+              {filteredPeople.map((person) => (
+                <OrgChartNode
+                  key={person.name}
+                  name={person.name}
+                  title={person.title}
+                />
+              ))}
+            </div>
+          </OrgChartNode>
+        </div>
+      )}
     </div>
   );
 };
