@@ -1,14 +1,21 @@
 
 import React, { useState } from 'react';
-import { User, ArrowDown } from 'lucide-react';
+import { ArrowDown, UserRound } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface OrgChartNodeProps {
   name: string;
   title: string;
+  avatarUrl?: string;
   children?: React.ReactNode;
 }
 
-const OrgChartNode = ({ name, title, children }: OrgChartNodeProps) => {
+const OrgChartNode = ({ 
+  name, 
+  title, 
+  avatarUrl, 
+  children 
+}: OrgChartNodeProps) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
@@ -19,9 +26,16 @@ const OrgChartNode = ({ name, title, children }: OrgChartNodeProps) => {
           onClick={() => setIsExpanded(!isExpanded)}
         >
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-notion-subtle rounded-full">
-              <User className="w-5 h-5 text-notion-secondary" />
-            </div>
+            <Avatar>
+              <AvatarImage 
+                src={avatarUrl} 
+                alt={`${name}'s avatar`} 
+                className="object-cover"
+              />
+              <AvatarFallback>
+                <UserRound className="w-5 h-5 text-notion-secondary" />
+              </AvatarFallback>
+            </Avatar>
             <div className="flex-1">
               <h3 className="font-medium text-notion-text">{name}</h3>
               <p className="text-sm text-notion-secondary">{title}</p>
