@@ -93,24 +93,32 @@ const OrgChartNode = ({
                 <div className={`flex flex-wrap gap-8 justify-center ${isCompact ? 'px-4' : ''}`}>
                   {React.Children.map(children, child => {
                     if (React.isValidElement(child)) {
-                      // Only pass level prop to OrgChartNode components
+                      // Check if the child is an OrgChartNode component
                       if (child.type === OrgChartNode) {
+                        // Safe to pass level prop to OrgChartNode
                         return React.cloneElement(child, {
+                          ...child.props,
                           level: level + 1
                         });
                       }
-                      // For non-OrgChartNode components (like div wrappers)
-                      // Process their children to pass level prop to any OrgChartNode descendants
+                      
+                      // Handle wrapper divs with OrgChartNode children
                       if (child.props.children) {
+                        // Create a new children array with updated props for OrgChartNode components
+                        const updatedChildren = React.Children.map(child.props.children, grandChild => {
+                          if (React.isValidElement(grandChild) && grandChild.type === OrgChartNode) {
+                            return React.cloneElement(grandChild, {
+                              ...grandChild.props,
+                              level: level + 1
+                            });
+                          }
+                          return grandChild;
+                        });
+                        
+                        // Clone the wrapper with updated children
                         return React.cloneElement(child, {
-                          children: React.Children.map(child.props.children, grandChild => {
-                            if (React.isValidElement(grandChild) && grandChild.type === OrgChartNode) {
-                              return React.cloneElement(grandChild, {
-                                level: level + 1
-                              });
-                            }
-                            return grandChild;
-                          })
+                          ...child.props,
+                          children: updatedChildren
                         });
                       }
                     }
