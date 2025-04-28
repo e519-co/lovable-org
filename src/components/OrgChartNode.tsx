@@ -44,6 +44,11 @@ const OrgChartNode = ({
 
   const levelIndent = level * 32;
 
+  // Helper function to check if a component is an OrgChartNode
+  const isOrgChartNode = (element: React.ReactElement): boolean => {
+    return element.type === OrgChartNode;
+  };
+
   return (
     <div className="flex flex-col items-center max-w-full" style={{ marginLeft: levelIndent }}>
       <div className={`flex flex-col items-center ${level > 0 ? 'border-l border-gray-200' : ''}`}>
@@ -99,7 +104,8 @@ const OrgChartNode = ({
                   <CarouselContent>
                     {React.Children.map(children, child => {
                       if (React.isValidElement(child)) {
-                        if (child.type === OrgChartNode) {
+                        // Case 1: Direct OrgChartNode child
+                        if (isOrgChartNode(child)) {
                           return (
                             <CarouselItem className="basis-auto">
                               {React.cloneElement(child, { 
@@ -110,21 +116,22 @@ const OrgChartNode = ({
                           );
                         }
                         
+                        // Case 2: Wrapper div containing OrgChartNode children
                         if (child.props && child.props.children) {
                           const updatedChildren = React.Children.map(child.props.children, grandChild => {
                             if (React.isValidElement(grandChild)) {
-                              // Check if grandChild is an OrgChartNode before passing level prop
-                              if (grandChild.type === OrgChartNode) {
+                              // Only pass level prop to OrgChartNode components
+                              if (isOrgChartNode(grandChild)) {
                                 return (
                                   <CarouselItem className="basis-auto">
                                     {React.cloneElement(grandChild, {
-                                      ...(typeof grandChild.props === 'object' && grandChild.props !== null ? grandChild.props : {}),
+                                      ...grandChild.props,
                                       level: level + 1
                                     })}
                                   </CarouselItem>
                                 );
                               } else {
-                                // For non-OrgChartNode components, don't pass level prop
+                                // Don't pass level prop to other components
                                 return (
                                   <CarouselItem className="basis-auto">
                                     {grandChild}
