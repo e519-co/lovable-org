@@ -116,7 +116,7 @@ const OrgChartNode = ({
                                 return (
                                   <CarouselItem className="basis-auto">
                                     {React.cloneElement(grandChild, {
-                                      ...grandChild.props,
+                                      ...(typeof grandChild.props === 'object' && grandChild.props !== null ? grandChild.props : {}),
                                       level: level + 1
                                     })}
                                   </CarouselItem>
