@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowDown, UserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -29,7 +28,6 @@ const OrgChartNode = ({
   const [isExpanded, setIsExpanded] = useState(true);
   const [isCompact, setIsCompact] = useState(false);
 
-  // Function to count direct reports
   const countDirectReports = () => {
     if (!children) return 0;
     const childrenArray = React.Children.toArray(children);
@@ -43,8 +41,7 @@ const OrgChartNode = ({
   const directReportsCount = countDirectReports();
   const showCompactToggle = directReportsCount > 8;
 
-  // Calculate indentation based on level
-  const levelIndent = level * 32; // 32px indent per level
+  const levelIndent = level * 32;
 
   return (
     <div className="flex flex-col items-center max-w-full" style={{ marginLeft: levelIndent }}>
@@ -101,7 +98,6 @@ const OrgChartNode = ({
                   <CarouselContent>
                     {React.Children.map(children, child => {
                       if (React.isValidElement(child)) {
-                        // Check if the child is an OrgChartNode component
                         if (child.type === OrgChartNode) {
                           return (
                             <CarouselItem className="basis-auto">
@@ -113,19 +109,19 @@ const OrgChartNode = ({
                           );
                         }
                         
-                        // Handle wrapper divs with OrgChartNode children
                         if (child.props && child.props.children) {
-                          // Create a new children array with updated props for OrgChartNode components
                           const updatedChildren = React.Children.map(child.props.children, grandChild => {
-                            if (React.isValidElement(grandChild) && grandChild.type === OrgChartNode) {
-                              return (
-                                <CarouselItem className="basis-auto">
-                                  {React.cloneElement(grandChild, {
-                                    ...grandChild.props,
-                                    level: level + 1
-                                  })}
-                                </CarouselItem>
-                              );
+                            if (React.isValidElement(grandChild)) {
+                              if (grandChild.type === OrgChartNode) {
+                                return (
+                                  <CarouselItem className="basis-auto">
+                                    {React.cloneElement(grandChild, {
+                                      ...(grandChild.props || {}),
+                                      level: level + 1
+                                    })}
+                                  </CarouselItem>
+                                );
+                              }
                             }
                             return grandChild;
                           });
