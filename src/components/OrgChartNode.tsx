@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ArrowDown, UserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -112,6 +113,7 @@ const OrgChartNode = ({
                         if (child.props && child.props.children) {
                           const updatedChildren = React.Children.map(child.props.children, grandChild => {
                             if (React.isValidElement(grandChild)) {
+                              // Check if grandChild is an OrgChartNode before passing level prop
                               if (grandChild.type === OrgChartNode) {
                                 return (
                                   <CarouselItem className="basis-auto">
@@ -122,6 +124,7 @@ const OrgChartNode = ({
                                   </CarouselItem>
                                 );
                               } else {
+                                // For non-OrgChartNode components, don't pass level prop
                                 return (
                                   <CarouselItem className="basis-auto">
                                     {grandChild}
