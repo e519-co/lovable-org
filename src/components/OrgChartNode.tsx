@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowDown, UserRound, ChevronDown, ChevronUp } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -117,9 +116,15 @@ const OrgChartNode = ({
                                 return (
                                   <CarouselItem className="basis-auto">
                                     {React.cloneElement(grandChild, {
-                                      level: level + 1,
-                                      ...(typeof grandChild.props === 'object' ? grandChild.props : {})
+                                      ...grandChild.props,
+                                      level: level + 1
                                     })}
+                                  </CarouselItem>
+                                );
+                              } else {
+                                return (
+                                  <CarouselItem className="basis-auto">
+                                    {grandChild}
                                   </CarouselItem>
                                 );
                               }
